@@ -233,3 +233,9 @@ After creating a virtual environment and setting up a Django project and app for
         path('api/', include('your_app_name.urls')),  # Replace 'your_app_name' with the actual app name
     ]
     ```
+
+# Django Admin
+## Superuser:
+**Username**: Admin  
+**Password**: admin123
+
