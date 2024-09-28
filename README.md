@@ -236,6 +236,68 @@ After creating a virtual environment and setting up a Django project and app for
 
 # Django Admin
 ## Superuser:
-**Username**: Admin  
-**Password**: admin123
+```bash
+Username: Admin  
+Password: admin123
+```
 
+# Djoser
+**Djoser** is a Django library that simplifies user authentication by providing a set of easy-to-use RESTful endpoints for common user operations like login, registration, password reset, and token management. It works seamlessly with Django Rest Framework (DRF) and integrates well with JSON Web Tokens (JWT) for secure authentication.
+
+## Installation and Setup
+
+1. **To install Djoser**:
+    ```bash
+    pip install djoser
+    ```
+
+2. **Install Django Rest Framework (DRF)** (if not already installed):
+    ```bash
+    pip install djangorestframework
+    ```
+
+3. **Add `djoser` and `rest_framework` to `INSTALLED_APPS`** in `settings.py`:
+    ```python
+    INSTALLED_APPS = [
+        'rest_framework',
+        'djoser',
+    ]
+    ```
+
+4. **Set up Djoser URLs** in your `urls.py`:
+    ```python
+    from django.urls import path, include
+
+    urlpatterns = [
+        path('auth/', include('djoser.urls')),
+        path('auth/', include('djoser.urls.jwt')),  # If using JWT authentication
+    ]
+    ```
+
+5. **Configure Authentication** in `settings.py` (Optional - For JWT):
+    ```python
+    REST_FRAMEWORK = {
+        'DEFAULT_AUTHENTICATION_CLASSES': (
+            'rest_framework_simplejwt.authentication.JWTAuthentication',
+        ),
+    }
+
+    SIMPLE_JWT = {
+        'AUTH_HEADER_TYPES': ('Bearer',),
+    }
+    ```
+
+6. **Install Simple JWT** (for JWT token-based authentication):
+    ```bash
+    pip install djangorestframework-simplejwt
+    ```
+
+7. **Run migrations** to create necessary database tables:
+    ```bash
+    python manage.py migrate
+    ```
+
+8. **Run the development server**:
+    ```bash
+    python manage.py runserver
+    ```
