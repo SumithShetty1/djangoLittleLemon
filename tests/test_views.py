@@ -1,25 +1,39 @@
-from django.test import TestCase
-from rest_framework.test import APIClient
+from django.test import TestCase, Client
 from django.urls import reverse
+from django.contrib.auth.models import User
+from rest_framework import status
+
 from restaurant.models import Menu
 from restaurant.serializers import MenuItemSerializer
 
 class MenuViewTest(TestCase):
     def setUp(self):
-        # Create test instances of the Menu model
-        self.menu1 = Menu.objects.create(name='Pasta', price=12.99)
-        self.menu2 = Menu.objects.create(name='Pizza', price=9.99)
-        self.menu3 = Menu.objects.create(name='Salad', price=7.99)
-        self.client = APIClient()
+        self.client = Client()
+        self.user = User.objects.create_user(
+            username='testuser2',
+            password='testpassword'
+        )
+        
+        self.pizza = Menu.objects.create(title='Pizza', price=12.99, inventory=10)
+        self.burger = Menu.objects.create(title='Burger', price=8.99, inventory=5)
+        self.pasta = Menu.objects.create(title='Pasta', price=15.99, inventory=7)
+    
+    def loginAsTestUser(self):
+        self.client.login(username='testuser2', password='testpassword')
+    
+    def test_view_authentication(self):
+        response = self.client.get(reverse('menu'))
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
+        self.loginAsTestUser()
+        response = self.client.get(reverse('menu'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+    
     def test_getall(self):
-        # Make a GET request to the Menu endpoint
-        response = self.client.get(reverse('menu-list'))  # assuming 'menu-list' is the name of your URL pattern
-
-        # Retrieve all Menu objects and serialize them
-        menus = Menu.objects.all()
-        serialized_data = MenuItemSerializer(menus, many=True).data
-
-        # Assert that the response data matches the serialized data
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data, serialized_data)
+        self.loginAsTestUser()
+        response = self.client.get(reverse('menu'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        
+        menu = Menu.objects.all()
+        serializer = MenuItemSerializer(menu, many=True)
+        self.assertEqual(response.data, serializer.data)
