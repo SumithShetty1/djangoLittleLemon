@@ -296,8 +296,3 @@ Password: admin123
     ```bash
     python manage.py migrate
     ```
-
-8. **Run the development server**:
-    ```bash
-    python manage.py runserver
-    ```

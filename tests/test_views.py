@@ -10,7 +10,7 @@ class MenuViewTest(TestCase):
     def setUp(self):
         self.client = Client()
         self.user = User.objects.create_user(
-            username='testuser2',
+            username='testuser',
             password='testpassword'
         )
         
@@ -19,7 +19,7 @@ class MenuViewTest(TestCase):
         self.pasta = Menu.objects.create(title='Pasta', price=15.99, inventory=7)
     
     def loginAsTestUser(self):
-        self.client.login(username='testuser2', password='testpassword')
+        self.client.login(username='testuser', password='testpassword')
     
     def test_view_authentication(self):
         response = self.client.get(reverse('menu'))
