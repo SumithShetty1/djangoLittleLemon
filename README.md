@@ -1,4 +1,4 @@
-# Little Lemon Web Application using Django Peer-graded Assignment Back-End Developer Capstone
+# Little Lemon: Django-Based Web Application for Table Reservations (Peer-Graded Assignment for Back-End Developer Capstone)
 
 # Working with Virtual Environments on Your Local Machine
 
